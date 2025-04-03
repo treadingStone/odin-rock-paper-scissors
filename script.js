@@ -1,4 +1,35 @@
 const body = document.querySelector("body");
+const info = document.querySelector("header p");
+
+let coolPrintStringQueue = [];
+let coolPrintStringPrinting = false;
+
+setInterval(() => {
+    if (coolPrintStringQueue.length > 0 && !coolPrintStringPrinting) {
+        coolPrintString(coolPrintStringQueue[0][0], coolPrintStringQueue[0][1]);
+    };
+}, 100);
+
+async function coolPrintString(string, node) {
+    coolPrintStringPrinting = true;
+    node.textContent = "";
+    const splitString = string.split('');
+    function append(i) {
+        const newTextNode = document.createTextNode(i);
+        node.appendChild(newTextNode);
+    }
+    for (let i = 0; i <= splitString.length; i++) {
+        if (i === splitString.length) {
+            coolPrintStringQueue.shift();
+            setTimeout(() => {
+                coolPrintStringPrinting = false;
+            }, (splitString.length * 50) + 1000);
+            return
+        } else {
+            setTimeout(append, ((i + 1) * 50), splitString[i]);
+        };
+    };
+};
 
 function handleClick(e) {
     if (e.target.classList.contains("rock")) {
@@ -23,18 +54,13 @@ function getComputerChoice() {
     };
 };
 
-// function getHumanChoice() {
-//     const humanChoice = prompt('Enter your choice of "rock", "paper", or "scissors".');
-//     return humanChoice;
-// };
-
 function playGame() {
     let computerScore = 0;
     let humanScore = 0;
     let round = 1;
 
-    console.log("Welcome to rock, paper, scissors!");
-    console.log("This is a best of 5 game. Will you win, or will you lose!? Let's find out!");
+    coolPrintStringQueue.push(["Welcome to rock, paper, scissors!", info]);
+    coolPrintStringQueue.push(["This is a best of 5 game. Will you win, or will you lose!? Let's find out!", info]);
 
     function playRound(humanChoice, computerChoice) {
         console.log(`Round ${round}.`);
