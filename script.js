@@ -14,19 +14,21 @@ async function coolPrintString(string, node) {
     coolPrintStringPrinting = true;
     node.textContent = "";
     const splitString = string.split('');
-    function append(i) {
+    function append(i, final) {
         const newTextNode = document.createTextNode(i);
         node.appendChild(newTextNode);
-    }
-    for (let i = 0; i <= splitString.length; i++) {
-        if (i === splitString.length) {
-            coolPrintStringQueue.shift();
+        if (final) {
             setTimeout(() => {
                 coolPrintStringPrinting = false;
-            }, (splitString.length * 50) + 1000);
-            return
+            }, 500);
+        }
+    }
+    for (let i = 0; i < splitString.length; i++) {
+        if (i === (splitString.length - 1)) {
+            setTimeout(append, ((i + 1) * 50), splitString[i], true);
+            coolPrintStringQueue.shift();
         } else {
-            setTimeout(append, ((i + 1) * 50), splitString[i]);
+            setTimeout(append, ((i + 1) * 50), splitString[i], false);
         };
     };
 };
