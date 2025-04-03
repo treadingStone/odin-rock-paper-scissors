@@ -79,10 +79,10 @@ function playGame() {
         } else {
             console.log("Nobody wins! Congratu...lations?");
         }
-        console.log("Refresh the page to play again.")
+        console.log("Refresh the page to play again.");
     }
 
-    playRound(getHumanChoice(), getComputerChoice());
+    // playRound(getHumanChoice(), getComputerChoice());
 };
 
 playGame();
