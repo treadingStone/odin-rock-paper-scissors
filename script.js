@@ -1,3 +1,17 @@
+const body = document.querySelector("body");
+
+function handleClick(e) {
+    if (e.target.classList.contains("rock")) {
+        console.log('User clicked "rock"');
+    } else if (e.target.classList.contains("paper")) {
+        console.log('User clicked "paper"');
+    } else if (e.target.classList.contains("scissors")) {
+        console.log('User clicked "scissors"');
+    };
+};
+
+body.addEventListener("click", handleClick);
+
 function getComputerChoice() {
     const getRandomInt = Math.floor(Math.random() * 3);
     if (getRandomInt === 0) {
@@ -9,10 +23,10 @@ function getComputerChoice() {
     };
 };
 
-function getHumanChoice() {
-    const humanChoice = prompt('Enter your choice of "rock", "paper", or "scissors".');
-    return humanChoice;
-};
+// function getHumanChoice() {
+//     const humanChoice = prompt('Enter your choice of "rock", "paper", or "scissors".');
+//     return humanChoice;
+// };
 
 function playGame() {
     let computerScore = 0;
@@ -37,7 +51,7 @@ function playGame() {
              else if (computerChoice === "paper") {
                 computerScore += 1;
                 console.log("Computer wins this round!");
-            }
+            };
         } else if (lcHumanChoice === "paper") {
             if (computerChoice === "rock") {
                 humanScore += 1;
@@ -46,7 +60,7 @@ function playGame() {
              else if (computerChoice === "scissors") {
                 computerScore += 1;
                 console.log("Computer wins this round!");
-            }     
+            }; 
         } else if (lcHumanChoice === "scissors") {
             if (computerChoice === "paper") {
                 humanScore += 1;
@@ -78,9 +92,9 @@ function playGame() {
             console.log("Computer wins. Better luck next time!");
         } else {
             console.log("Nobody wins! Congratu...lations?");
-        }
+        };
         console.log("Refresh the page to play again.");
-    }
+    };
 
     // playRound(getHumanChoice(), getComputerChoice());
 };
