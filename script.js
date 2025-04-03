@@ -4,6 +4,14 @@ const info = document.querySelector("header p");
 let coolPrintStringQueue = [];
 let coolPrintStringPrinting = false;
 
+let computerScore = 0;
+let humanScore = 0;
+let round = 1;
+
+coolPrintStringQueue.push(["Welcome to rock, paper, scissors!", info]);
+coolPrintStringQueue.push(["This is a best of 5 game. Will you win, or will you lose!? Let's find out!", info]);
+coolPrintStringQueue.push(["Make a selection to begin playing.", info]);
+
 setInterval(() => {
     if (coolPrintStringQueue.length > 0 && !coolPrintStringPrinting) {
         coolPrintString(coolPrintStringQueue[0][0], coolPrintStringQueue[0][1]);
@@ -33,14 +41,23 @@ async function coolPrintString(string, node) {
     };
 };
 
+function updateScoreUI() {
+    const playerScoreElement = document.querySelector(".player.score p:nth-child(2)");
+    const computerScoreElement = document.querySelector(".computer.score p:nth-child(2)");
+    playerScoreElement.textContent = humanScore;
+    computerScoreElement.textContent = computerScore;
+};
+
 function handleClick(e) {
-    if (e.target.classList.contains("rock")) {
-        console.log('User clicked "rock"');
-    } else if (e.target.classList.contains("paper")) {
-        console.log('User clicked "paper"');
-    } else if (e.target.classList.contains("scissors")) {
-        console.log('User clicked "scissors"');
-    };
+    if (round >= 5) {
+        if (e.target.classList.contains("rock")) {
+            playRound("rock", getComputerChoice());
+        } else if (e.target.classList.contains("paper")) {
+            playRound("paper", getComputerChoice());
+        } else if (e.target.classList.contains("scissors")) {
+            playRound("scissors", getComputerChoice());
+        };
+    }
 };
 
 body.addEventListener("click", handleClick);
@@ -56,75 +73,59 @@ function getComputerChoice() {
     };
 };
 
-function playGame() {
-    let computerScore = 0;
-    let humanScore = 0;
-    let round = 1;
-
-    coolPrintStringQueue.push(["Welcome to rock, paper, scissors!", info]);
-    coolPrintStringQueue.push(["This is a best of 5 game. Will you win, or will you lose!? Let's find out!", info]);
-
-    function playRound(humanChoice, computerChoice) {
-        console.log(`Round ${round}.`);
-        console.log(`Player chose ${humanChoice}!`);
-        console.log(`Computer chose ${computerChoice}!`);
-        const lcHumanChoice = humanChoice.toLowerCase();
-        if (lcHumanChoice === computerChoice) {
-            console.log("It's a draw!");
-        } else if (lcHumanChoice === "rock") {
-            if (computerChoice === "scissors") {
-                humanScore += 1;
-                console.log("Player wins this round!");
-            }
-             else if (computerChoice === "paper") {
-                computerScore += 1;
-                console.log("Computer wins this round!");
-            };
-        } else if (lcHumanChoice === "paper") {
-            if (computerChoice === "rock") {
-                humanScore += 1;
-                console.log("Player wins this round!");
-            }
-             else if (computerChoice === "scissors") {
-                computerScore += 1;
-                console.log("Computer wins this round!");
-            }; 
-        } else if (lcHumanChoice === "scissors") {
-            if (computerChoice === "paper") {
-                humanScore += 1;
-                console.log("Player wins this round!");
-            }
-             else if (computerChoice === "rock") {
-                computerScore += 1;
-                console.log("Computer wins this round!");
-            };   
-        };
-        checkGameState();
-    };
-
-    function checkGameState() {
-        if (round === 5 || humanScore === 3 || computerScore === 3) {
-            endGame();
-        } else {
-            console.log(`Current score: Player - ${humanScore}, Computer - ${computerScore}`);
-            round += 1;
-            playRound(getHumanChoice(), getComputerChoice());
+function playRound(humanChoice, computerChoice) {
+    coolPrintStringQueue.push([`Round ${round}. Player chose ${humanChoice}! Computer chose ${computerChoice}!`, info]);
+    const lcHumanChoice = humanChoice.toLowerCase();
+    if (lcHumanChoice === computerChoice) {
+        coolPrintStringQueue.push(["It's a draw!", info]);
+    } else if (lcHumanChoice === "rock") {
+        if (computerChoice === "scissors") {
+            humanScore += 1;
+            coolPrintStringQueue.push(["Player wins this round!", info]);
         }
-    }
-
-    function endGame() {
-        console.log(`Final score: Player - ${humanScore}, Computer - ${computerScore}`);
-        if (humanScore > computerScore) {
-            console.log("Player wins! Congratulations!");
-        } else if (computerScore > humanScore) {
-            console.log("Computer wins. Better luck next time!");
-        } else {
-            console.log("Nobody wins! Congratu...lations?");
+         else if (computerChoice === "paper") {
+            computerScore += 1;
+            coolPrintStringQueue.push(["Computer wins this round!", info]);
         };
-        console.log("Refresh the page to play again.");
+    } else if (lcHumanChoice === "paper") {
+        if (computerChoice === "rock") {
+            humanScore += 1;
+            coolPrintStringQueue.push(["Player wins this round!", info]);
+        }
+         else if (computerChoice === "scissors") {
+            computerScore += 1;
+            coolPrintStringQueue.push(["Computer wins this round!", info]);
+        }; 
+    } else if (lcHumanChoice === "scissors") {
+        if (computerChoice === "paper") {
+            humanScore += 1;
+            coolPrintStringQueue.push(["Player wins this round!", info]);
+        }
+         else if (computerChoice === "rock") {
+            computerScore += 1;
+            coolPrintStringQueue.push(["Computer wins this round!", info]);
+        };   
     };
-
-    // playRound(getHumanChoice(), getComputerChoice());
+    checkGameState();
+    updateScoreUI();
 };
 
-playGame();
+function checkGameState() {
+    if (round === 5 || humanScore === 3 || computerScore === 3) {
+        endGame();
+    } else {
+        round += 1;
+    }
+}
+
+function endGame() {
+    coolPrintStringQueue.push(["Game over!", info])
+    if (humanScore > computerScore) {
+        coolPrintStringQueue.push(["Player wins! Congratulations!", info]);
+    } else if (computerScore > humanScore) {
+        coolPrintStringQueue.push(["Computer wins. Better luck next time!", info]);
+    } else {
+        coolPrintStringQueue.push(["Nobody wins! Congratu...lations?"]);
+    };
+    console.log("Refresh the page to play again.");
+};
