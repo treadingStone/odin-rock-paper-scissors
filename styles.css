@@ -36,3 +36,7 @@ header {
 .score {
     display: flex;
 }
+
+.reset {
+    text-align: center;
+}

@@ -1,5 +1,6 @@
 const body = document.querySelector("body");
 const info = document.querySelector("header p");
+const reset = document.querySelector(".reset")
 
 let coolPrintStringQueue = [];
 let coolPrintStringPrinting = false;
@@ -49,7 +50,7 @@ function updateScoreUI() {
 };
 
 function handleClick(e) {
-    if (round >= 5) {
+    if (round < 6) {
         if (e.target.classList.contains("rock")) {
             playRound("rock", getComputerChoice());
         } else if (e.target.classList.contains("paper")) {
@@ -113,10 +114,9 @@ function playRound(humanChoice, computerChoice) {
 function checkGameState() {
     if (round === 5 || humanScore === 3 || computerScore === 3) {
         endGame();
-    } else {
-        round += 1;
     }
-}
+    round += 1;
+};
 
 function endGame() {
     coolPrintStringQueue.push(["Game over!", info])
@@ -125,7 +125,7 @@ function endGame() {
     } else if (computerScore > humanScore) {
         coolPrintStringQueue.push(["Computer wins. Better luck next time!", info]);
     } else {
-        coolPrintStringQueue.push(["Nobody wins! Congratu...lations?"]);
+        coolPrintStringQueue.push(["Nobody wins! Congratu...lations?", info]);
     };
-    console.log("Refresh the page to play again.");
+    coolPrintStringQueue.push(["Refresh the page to play again.", reset]);
 };
